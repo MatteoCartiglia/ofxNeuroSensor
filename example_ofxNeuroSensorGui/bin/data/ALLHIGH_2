@@ -1,0 +1,14 @@
+<bias>
+    <VBiasCharge>2840</VBiasCharge>
+    <VpiasP2>2840</VpiasP2>
+    <VPullDn>2218</VPullDn>
+    <VRef>3</VRef>
+    <ChargeAl>2975</ChargeAl>
+    <Ref_B>600</Ref_B>
+    <ReqPDn>2975</ReqPDn>
+    <TailN>2975</TailN>
+    <TailP>2840</TailP>
+    <ThrDn>3137</ThrDn>
+    <ThrUp>3137</ThrUp>
+    <VBn>3137</VBn>
+</bias>

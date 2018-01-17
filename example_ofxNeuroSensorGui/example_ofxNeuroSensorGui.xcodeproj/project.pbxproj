@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		03E83AC289474FFC25D317C2 /* bioamp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B61C90564FE5ECF9631AB264 /* bioamp.cpp */; };
 		5A4349E9754D6FA14C0F2A3A /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FC5DA1C87211D4F6377DA719 /* tinyxmlparser.cpp */; };
 		63B57AC5BF4EF088491E0317 /* ofxXmlSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50DF87D612C5AAE17AAFA6C0 /* ofxXmlSettings.cpp */; };
-		71884092200FA54A003C834D /* bioamp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7188408E200FA54A003C834D /* bioamp.cpp */; };
-		71884093200FA54A003C834D /* events.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7188408F200FA54A003C834D /* events.cpp */; };
 		933A2227713C720CEFF80FD9 /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2B40EDA85BEB63E46785BC29 /* tinyxml.cpp */; };
 		9CF4130A7E6DA19A3DC42B9A /* ofxSmartFont.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C954E0E8B7DB9D6983309883 /* ofxSmartFont.cpp */; };
 		9D44DC88EF9E7991B4A09951 /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 832BDC407620CDBA568B713D /* tinyxmlerror.cpp */; };
+		B46B17D94B78F57DFD81C3EA /* events.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8496BDE88800C67F7390C8A /* events.cpp */; };
 		C71A327EC67D610A4FD1041F /* ofxNeuroSensor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2CA4B8FBD5DCA87D43682F41 /* ofxNeuroSensor.cpp */; };
 		C9466C434D1CF8AB968D298D /* ofxDatGui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 26490D7CC31EF7D6ED5F925A /* ofxDatGui.cpp */; };
 		D3C1C48E59CAA2D68C0DD477 /* ofxDatGuiComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A3E3B8F332A1A3C7EDF4998 /* ofxDatGuiComponent.cpp */; };
@@ -66,11 +66,6 @@
 		545BBA6F6669BED2DA497BC6 /* ofxDatGuiScrollView.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGuiScrollView.h; path = ../../../addons/ofxDatGui/src/components/ofxDatGuiScrollView.h; sourceTree = SOURCE_ROOT; };
 		5FC25F1E8E1C53CFC19BC5E0 /* okFrontPanelDLL.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = okFrontPanelDLL.h; path = ../../../addons/ofxNeuroSensor/libs/okFrontPanel/include/okFrontPanelDLL.h; sourceTree = SOURCE_ROOT; };
 		64C563B8158C37E9D07AE29D /* ofxDatGuiFRM.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGuiFRM.h; path = ../../../addons/ofxDatGui/src/components/ofxDatGuiFRM.h; sourceTree = SOURCE_ROOT; };
-		7188408E200FA54A003C834D /* bioamp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = bioamp.cpp; path = ../src/bioamp.cpp; sourceTree = "<group>"; };
-		7188408F200FA54A003C834D /* events.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = events.cpp; path = ../src/events.cpp; sourceTree = "<group>"; };
-		71884090200FA54A003C834D /* events.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = events.h; path = ../src/events.h; sourceTree = "<group>"; };
-		71884091200FA54A003C834D /* bioamp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = bioamp.h; path = ../src/bioamp.h; sourceTree = "<group>"; };
-		71884094200FAABE003C834D /* osx-defines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "osx-defines.h"; path = "../src/osx-defines.h"; sourceTree = "<group>"; };
 		744031A3E8F8DAF9FE6F3EA8 /* ofxDatGuiGroups.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGuiGroups.h; path = ../../../addons/ofxDatGui/src/components/ofxDatGuiGroups.h; sourceTree = SOURCE_ROOT; };
 		787315438BF1DD00C81DF413 /* ofxDatGuiLabel.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGuiLabel.h; path = ../../../addons/ofxDatGui/src/components/ofxDatGuiLabel.h; sourceTree = SOURCE_ROOT; };
 		832BDC407620CDBA568B713D /* tinyxmlerror.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = tinyxmlerror.cpp; path = ../../../addons/ofxXmlSettings/libs/tinyxmlerror.cpp; sourceTree = SOURCE_ROOT; };
@@ -78,8 +73,11 @@
 		902724601B82C6AD81BBCD71 /* ofxDatGui2dPad.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGui2dPad.h; path = ../../../addons/ofxDatGui/src/components/ofxDatGui2dPad.h; sourceTree = SOURCE_ROOT; };
 		9705D66270ED89ECA6E6FECE /* ofxDatGui.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGui.h; path = ../../../addons/ofxDatGui/src/ofxDatGui.h; sourceTree = SOURCE_ROOT; };
 		9B5051062C6A871714E6F5F4 /* ofxDatGuiConstants.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGuiConstants.h; path = ../../../addons/ofxDatGui/src/core/ofxDatGuiConstants.h; sourceTree = SOURCE_ROOT; };
+		A40EF0076B5E3F045A5FF1DF /* events.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = events.h; path = ../../../addons/ofxNeuroSensor/src/events.h; sourceTree = SOURCE_ROOT; };
+		A8496BDE88800C67F7390C8A /* events.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = events.cpp; path = ../../../addons/ofxNeuroSensor/src/events.cpp; sourceTree = SOURCE_ROOT; };
 		B21E7E5F548EEA92F368040B /* tinyxml.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = tinyxml.h; path = ../../../addons/ofxXmlSettings/libs/tinyxml.h; sourceTree = SOURCE_ROOT; };
 		B498F0559F473CF855EF6062 /* ofxDatGuiTheme.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGuiTheme.h; path = ../../../addons/ofxDatGui/src/themes/ofxDatGuiTheme.h; sourceTree = SOURCE_ROOT; };
+		B61C90564FE5ECF9631AB264 /* bioamp.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = bioamp.cpp; path = ../../../addons/ofxNeuroSensor/src/bioamp.cpp; sourceTree = SOURCE_ROOT; };
 		BCC84C6EB3417706F4F762F0 /* ofxDatGuiComponent.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGuiComponent.h; path = ../../../addons/ofxDatGui/src/core/ofxDatGuiComponent.h; sourceTree = SOURCE_ROOT; };
 		C085A33340AB0C1DB647AC2F /* ofxDatGuiTextInput.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGuiTextInput.h; path = ../../../addons/ofxDatGui/src/components/ofxDatGuiTextInput.h; sourceTree = SOURCE_ROOT; };
 		C84ED7FCC017328C6F58283D /* ofxDatGuiColorPicker.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGuiColorPicker.h; path = ../../../addons/ofxDatGui/src/components/ofxDatGuiColorPicker.h; sourceTree = SOURCE_ROOT; };
@@ -95,6 +93,7 @@
 		E4B6FCAD0C3E899E008CF71C /* openFrameworks-Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.xml; path = "openFrameworks-Info.plist"; sourceTree = "<group>"; };
 		E4EB691F138AFCF100A09F29 /* CoreOF.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = CoreOF.xcconfig; path = ../../../libs/openFrameworksCompiled/project/osx/CoreOF.xcconfig; sourceTree = SOURCE_ROOT; };
 		E4EB6923138AFD0F00A09F29 /* Project.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Project.xcconfig; sourceTree = "<group>"; };
+		E9B8BDD0D57CB17F48E79D19 /* bioamp.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = bioamp.h; path = ../../../addons/ofxNeuroSensor/src/bioamp.h; sourceTree = SOURCE_ROOT; };
 		F59384ED57A7C6A7A8B0351D /* ofxDatGuiEvents.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGuiEvents.h; path = ../../../addons/ofxDatGui/src/core/ofxDatGuiEvents.h; sourceTree = SOURCE_ROOT; };
 		FC5DA1C87211D4F6377DA719 /* tinyxmlparser.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = tinyxmlparser.cpp; path = ../../../addons/ofxXmlSettings/libs/tinyxmlparser.cpp; sourceTree = SOURCE_ROOT; };
 		FDA86F4C2F1F1964D35391C6 /* ofxDatGuiButton.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGuiButton.h; path = ../../../addons/ofxDatGui/src/components/ofxDatGuiButton.h; sourceTree = SOURCE_ROOT; };
@@ -192,13 +191,12 @@
 		73872C670DD0EA276A73B99A /* src */ = {
 			isa = PBXGroup;
 			children = (
-				71884094200FAABE003C834D /* osx-defines.h */,
-				7188408E200FA54A003C834D /* bioamp.cpp */,
-				71884091200FA54A003C834D /* bioamp.h */,
-				7188408F200FA54A003C834D /* events.cpp */,
-				71884090200FA54A003C834D /* events.h */,
 				51EBF4EAC028848276059756 /* ofxNeuroSensor.h */,
+				A40EF0076B5E3F045A5FF1DF /* events.h */,
+				E9B8BDD0D57CB17F48E79D19 /* bioamp.h */,
+				B61C90564FE5ECF9631AB264 /* bioamp.cpp */,
 				2CA4B8FBD5DCA87D43682F41 /* ofxNeuroSensor.cpp */,
+				A8496BDE88800C67F7390C8A /* events.cpp */,
 			);
 			name = src;
 			sourceTree = "<group>";
@@ -411,14 +409,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				71884093200FA54A003C834D /* events.cpp in Sources */,
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */,
 				D3C1C48E59CAA2D68C0DD477 /* ofxDatGuiComponent.cpp in Sources */,
 				C9466C434D1CF8AB968D298D /* ofxDatGui.cpp in Sources */,
 				9CF4130A7E6DA19A3DC42B9A /* ofxSmartFont.cpp in Sources */,
+				03E83AC289474FFC25D317C2 /* bioamp.cpp in Sources */,
 				C71A327EC67D610A4FD1041F /* ofxNeuroSensor.cpp in Sources */,
-				71884092200FA54A003C834D /* bioamp.cpp in Sources */,
+				B46B17D94B78F57DFD81C3EA /* events.cpp in Sources */,
 				63B57AC5BF4EF088491E0317 /* ofxXmlSettings.cpp in Sources */,
 				5A4349E9754D6FA14C0F2A3A /* tinyxmlparser.cpp in Sources */,
 				9D44DC88EF9E7991B4A09951 /* tinyxmlerror.cpp in Sources */,
@@ -572,27 +570,28 @@
 					../../../addons/ofxNeuroSensor/src,
 					../../../addons/ofxXmlSettings/libs,
 					../../../addons/ofxXmlSettings/src,
-					/usr/local/include/,
+					/usr/local/include,
+					/usr/local/Cellar/boost/1.66.0/include/,
 				);
 				ICON = "$(ICON_NAME_DEBUG)";
 				ICON_FILE = "$(ICON_FILE_PATH)$(ICON)";
 				INFOPLIST_FILE = "openFrameworks-Info.plist";
 				INSTALL_PATH = /Applications;
-				LD_GENERATE_MAP_FILE = NO;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					/usr/local/lib/,
+					/usr/local/Cellar/boost/1.66.0/lib,
 				);
 				OTHER_LDFLAGS = (
 					"$(OF_CORE_FRAMEWORKS)",
 					"$(OF_CORE_LIBS)",
-					../../../addons/ofxNeuroSensor/libs/okFrontPanel/lib/osx/libokFrontPanel.dylib,
-					"-lpthread",
 					"-lboost_system",
-					"-lokFrontPanel",
+					"-ldl",
 					"-std=c++11",
+					"-lpthread",
+					../../../addons/ofxNeuroSensor/libs/okFrontPanel/lib/osx/libokFrontPanel.dylib,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)Debug";
+				USER_HEADER_SEARCH_PATHS = "/usr/local/include /usr/local/Cellar/boost/1.66.0/include/";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -627,27 +626,28 @@
 					../../../addons/ofxNeuroSensor/src,
 					../../../addons/ofxXmlSettings/libs,
 					../../../addons/ofxXmlSettings/src,
-					/usr/local/include/,
+					/usr/local/include,
+					/usr/local/Cellar/boost/1.66.0/include/,
 				);
 				ICON = "$(ICON_NAME_RELEASE)";
 				ICON_FILE = "$(ICON_FILE_PATH)$(ICON)";
 				INFOPLIST_FILE = "openFrameworks-Info.plist";
 				INSTALL_PATH = /Applications;
-				LD_GENERATE_MAP_FILE = NO;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					/usr/local/lib/,
+					/usr/local/Cellar/boost/1.66.0/lib,
 				);
 				OTHER_LDFLAGS = (
 					"$(OF_CORE_FRAMEWORKS)",
 					"$(OF_CORE_LIBS)",
-					../../../addons/ofxNeuroSensor/libs/okFrontPanel/lib/osx/libokFrontPanel.dylib,
-					"-lpthread",
 					"-lboost_system",
-					"-lokFrontPanel",
+					"-ldl",
 					"-std=c++11",
+					"-lpthread",
+					../../../addons/ofxNeuroSensor/libs/okFrontPanel/lib/osx/libokFrontPanel.dylib,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "/usr/local/include /usr/local/Cellar/boost/1.66.0/include/";
 				WRAPPER_EXTENSION = app;
 				baseConfigurationReference = E4EB6923138AFD0F00A09F29;
 			};

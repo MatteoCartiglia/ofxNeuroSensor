@@ -58,6 +58,9 @@ BioAmp dev1(XILINX_CONFIGURATION_FILE);
 // create buffer of events
 std::queue<EventRaw> ev_buffer;
 
+ofxNeuroSensor::ofxNeuroSensor(){
+    ;
+}
 
 void ofxNeuroSensor::setup_biases(string load_file){
     
@@ -174,7 +177,7 @@ void ofxNeuroSensor::correct_timestamps(){
     }
 }
 
-void ofApp::populate_index_time_bin(){
+void ofxNeuroSensor::populate_index_time_bin(){
     //Select which events to plot at this iteration
     
     if (packetsPolarity.size()==0){
@@ -364,10 +367,10 @@ void ofxNeuroSensor::setup_gui(){
     LIVE = f1->addToggle("LIVE", false);
     f1->addBreak();
     
-    f1->onButtonEvent(this, &ofApp::onButtonEvent);
-    f1->onToggleEvent(this, &ofApp::onToggleEvent);
-    f1->onSliderEvent(this, &ofApp::onSliderEvent);
-    f1->onTextInputEvent(this, &ofApp::onTextInputEvent);
+    f1->onButtonEvent(this, &ofxNeuroSensor::onButtonEvent);
+    f1->onToggleEvent(this, &ofxNeuroSensor::onToggleEvent);
+    f1->onSliderEvent(this, &ofxNeuroSensor::onSliderEvent);
+    f1->onTextInputEvent(this, &ofxNeuroSensor::onTextInputEvent);
     
 }
 

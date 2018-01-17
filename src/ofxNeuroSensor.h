@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef ofxNeuroSensor_h
+#define ofxNeuroSensor_h
+
 #include "ofMain.h"
 #include <stdlib.h>
 #include <fstream>
@@ -10,7 +13,7 @@
 #include <iostream>
 #include "ofxXmlSettings.h"
 #include "ofxDatGui.h"
-#include "okFrontPanelDLL.h"
+//#include "okFrontPanelDLL.h"
 
 #define XILINX_CONFIGURATION_FILE "bioAmp_1_0_XEM7310.bit"
 
@@ -26,9 +29,11 @@ struct polarity {
     bool valid; // true ok
 };
 
-class ofxNeuroSensor : public ofBaseApp{
+
+class ofxNeuroSensor {
     
 public:
+    ofxNeuroSensor();
     void setup();
     void update();
     void draw();
@@ -67,7 +72,7 @@ public:
     //Graphics
     ofEasyCam myCam;
     ofMesh mesh;
-    ofxPanel gui;
+    //ofxPanel gui;
     string path;
     ofxDatGuiFolder* f1;
     bool drawGui;
@@ -129,3 +134,4 @@ public:
     
 };
 
+#endif /* ofxNeuroSensor_h */

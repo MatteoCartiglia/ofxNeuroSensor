@@ -1,0 +1,19 @@
+<settings>
+    <blinkRate>10</blinkRate>
+    <gravity>9.800000000</gravity>
+    <sceneName>field</sceneName>
+<group>
+		<VbiasCharge>3300</VbiasCharge>
+		<VpiasP2>49</VpiasP2>
+		<VPullDn>1800</VPullDn>
+		<Vref>1185</Vref>
+		<ChargeAl>3300</ChargeAl>
+		<RefB>600</RefB>
+		<ReqPDn>2100</ReqPDn>
+		<TailN>3100</TailN>
+		<TailP>200</TailP>
+		<ThrDn>440</ThrDn>
+		<ThrUp>2520</ThrUp>
+		<VBn>1831</VBn>
+	</group>
+</settings>

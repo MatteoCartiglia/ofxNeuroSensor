@@ -3,7 +3,6 @@
 #include "ofMain.h"
 #include "ofxNeuroSensor.h"
 
-
 class ofApp: public ofBaseApp{
 	public:
 		void setup();

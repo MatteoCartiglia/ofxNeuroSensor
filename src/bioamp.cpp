@@ -1,6 +1,6 @@
 #include "bioamp.h"
 #include <iostream>
-//#include "ofApp.h"
+
 #define N_BIASES 12
 
 bool FPGA= false;
