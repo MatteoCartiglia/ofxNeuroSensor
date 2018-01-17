@@ -9,6 +9,9 @@ This addon is for openFrameworks and it enable the use of the Dynamic Neural Tis
 
 OpenFrameworks addon for Neural Bioamplifier chip.
 
+![alt text](https://github.com/federicohyo/ofxNeuroSensor/blob/master/docs/neuroSensor.gif "ofxNeuroSensor")
+
+
 License
 -------
 ofxNeuroSensor is distributed under the [MIT License](https://en.wikipedia.org/wiki/MIT_License), and you might consider using this for your repository. 
