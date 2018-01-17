@@ -15,16 +15,17 @@
 # and the PG will write to the console the kind of error and in which line it is
 
 meta:
-	ADDON_NAME = ofxAddonTemplate
-	ADDON_DESCRIPTION = ofxAddonTemplate is amazing!
-	ADDON_AUTHOR = @yournamehere
-	ADDON_TAGS = "addon" "template"
-	ADDON_URL = http://github.com/yournamehere/ofxAddonTemplate
+	ADDON_NAME = ofxNeuroSensor
+	ADDON_DESCRIPTION = ofxNeuroSensor for interfacing to the Dynamic Neural Tissue Sensor
+	ADDON_AUTHOR = @federicohyo
+	ADDON_TAGS = "addon" "template" "neural-tissue" "neural-probes" "neuromorphic"
+	ADDON_URL = http://github.com/federicohyo/ofxNeuroSensor
 
 common:
 	# dependencies with other addons, a list of them separated by spaces 
 	# or use += in several lines
-	# ADDON_DEPENDENCIES =
+	ADDON_DEPENDENCIES = ofxDatGui
+	ADDON_DEPENDENCIES += ofxXmlSettings
 	
 	# include search paths, this will be usually parsed from the file system
 	# but if the addon or addon libraries need special search paths they can be
