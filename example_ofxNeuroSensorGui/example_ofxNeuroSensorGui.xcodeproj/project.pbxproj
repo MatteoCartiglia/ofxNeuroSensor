@@ -70,6 +70,7 @@
 		7188408F200FA54A003C834D /* events.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = events.cpp; path = ../src/events.cpp; sourceTree = "<group>"; };
 		71884090200FA54A003C834D /* events.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = events.h; path = ../src/events.h; sourceTree = "<group>"; };
 		71884091200FA54A003C834D /* bioamp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = bioamp.h; path = ../src/bioamp.h; sourceTree = "<group>"; };
+		71884094200FAABE003C834D /* osx-defines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "osx-defines.h"; path = "../src/osx-defines.h"; sourceTree = "<group>"; };
 		744031A3E8F8DAF9FE6F3EA8 /* ofxDatGuiGroups.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGuiGroups.h; path = ../../../addons/ofxDatGui/src/components/ofxDatGuiGroups.h; sourceTree = SOURCE_ROOT; };
 		787315438BF1DD00C81DF413 /* ofxDatGuiLabel.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGuiLabel.h; path = ../../../addons/ofxDatGui/src/components/ofxDatGuiLabel.h; sourceTree = SOURCE_ROOT; };
 		832BDC407620CDBA568B713D /* tinyxmlerror.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = tinyxmlerror.cpp; path = ../../../addons/ofxXmlSettings/libs/tinyxmlerror.cpp; sourceTree = SOURCE_ROOT; };
@@ -191,6 +192,7 @@
 		73872C670DD0EA276A73B99A /* src */ = {
 			isa = PBXGroup;
 			children = (
+				71884094200FAABE003C834D /* osx-defines.h */,
 				7188408E200FA54A003C834D /* bioamp.cpp */,
 				71884091200FA54A003C834D /* bioamp.h */,
 				7188408F200FA54A003C834D /* events.cpp */,
@@ -577,13 +579,18 @@
 				INFOPLIST_FILE = "openFrameworks-Info.plist";
 				INSTALL_PATH = /Applications;
 				LD_GENERATE_MAP_FILE = NO;
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/lib/,
+				);
 				OTHER_LDFLAGS = (
 					"$(OF_CORE_FRAMEWORKS)",
 					"$(OF_CORE_LIBS)",
 					../../../addons/ofxNeuroSensor/libs/okFrontPanel/lib/osx/libokFrontPanel.dylib,
-					"-lboost_thread",
+					"-lpthread",
+					"-lboost_system",
 					"-lokFrontPanel",
+					"-std=c++11",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)Debug";
 				WRAPPER_EXTENSION = app;
@@ -627,13 +634,18 @@
 				INFOPLIST_FILE = "openFrameworks-Info.plist";
 				INSTALL_PATH = /Applications;
 				LD_GENERATE_MAP_FILE = NO;
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/lib/,
+				);
 				OTHER_LDFLAGS = (
 					"$(OF_CORE_FRAMEWORKS)",
 					"$(OF_CORE_LIBS)",
 					../../../addons/ofxNeuroSensor/libs/okFrontPanel/lib/osx/libokFrontPanel.dylib,
-					"-lboost_thread",
+					"-lpthread",
+					"-lboost_system",
 					"-lokFrontPanel",
+					"-std=c++11",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
