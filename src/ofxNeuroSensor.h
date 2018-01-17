@@ -13,9 +13,8 @@
 #include <iostream>
 #include "ofxXmlSettings.h"
 #include "ofxDatGui.h"
-//#include "okFrontPanelDLL.h"
 
-#define XILINX_CONFIGURATION_FILE "bioAmp_1_0_XEM7310.bit"
+#define XILINX_CONFIGURATION_FILE "data/bioAmp_1_0_XEM7310.bit"
 
 #include "events.h"
 #include "bioamp.h"

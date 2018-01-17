@@ -580,6 +580,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/Cellar/boost/1.66.0/lib,
+					/usr/local/lib/,
 				);
 				OTHER_LDFLAGS = (
 					"$(OF_CORE_FRAMEWORKS)",
@@ -588,7 +589,7 @@
 					"-ldl",
 					"-std=c++11",
 					"-lpthread",
-					../../../addons/ofxNeuroSensor/libs/okFrontPanel/lib/osx/libokFrontPanel.dylib,
+					"-lokFrontPanel",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)Debug";
 				USER_HEADER_SEARCH_PATHS = "/usr/local/include /usr/local/Cellar/boost/1.66.0/include/";
@@ -636,6 +637,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/Cellar/boost/1.66.0/lib,
+					/usr/local/lib/,
 				);
 				OTHER_LDFLAGS = (
 					"$(OF_CORE_FRAMEWORKS)",
@@ -644,7 +646,7 @@
 					"-ldl",
 					"-std=c++11",
 					"-lpthread",
-					../../../addons/ofxNeuroSensor/libs/okFrontPanel/lib/osx/libokFrontPanel.dylib,
+					"-lokFrontPanel",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USER_HEADER_SEARCH_PATHS = "/usr/local/include /usr/local/Cellar/boost/1.66.0/include/";

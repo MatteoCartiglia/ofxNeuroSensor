@@ -25,7 +25,7 @@
 #include "okFrontPanelDLL.h"
 #include "bioamp.h"
 
-#define XILINX_CONFIGURATION_FILE  "data/bioAmp_1_0_XEM7310.bit"
+//#define XILINX_CONFIGURATION_FILE  "data/bioAmp_1_0_XEM7310.bit"
 //#define XILINX_CONFIGURATION_FILE  "data/BioAmp_40usdelay.bit"
 
 #define BIAS_FILE "bias.xml"
@@ -281,6 +281,7 @@ void ofxNeuroSensor::Plot_2D_live(){
     packetsPolarity.clear();
     packetsPolarity.shrink_to_fit();
 }
+
 void ofxNeuroSensor::Plot_2D(){
     //plot in 2D
     mesh.clear(); // clear every time
@@ -456,7 +457,6 @@ void ofxNeuroSensor::setup(){
     origin = std::chrono::high_resolution_clock::now();
     setup_gui();
     if(FPGA){
-        
         setup_bioamp();
     }
 }
@@ -468,7 +468,6 @@ void ofxNeuroSensor::update(){
         
     }
     update_gui();
-    
 }
 
 
