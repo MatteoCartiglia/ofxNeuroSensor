@@ -2,7 +2,7 @@
 
 
 #include "ofMain.h"
-#include "ofxAddonTemplate.h"
+#include "ofxNeuroSensor.h"
 
 
 class ofApp: public ofBaseApp{
