@@ -128,40 +128,78 @@ int ofxNeuroSensor::pos(int x){
     return x*distance_point;
 }
 
+int ofxNeuroSensor::isBigEndian()
+{
+   unsigned int i = 2;
+   char *c = (char*)&i;
+   if (*c)
+   {
+       //cout<<"little endian";
+       return 0;
+   }
+   else
+   {
+       //cout<<"big endian";
+       return 1;
+   }
+}
+
+long ofxNeuroSensor::convertByteToLong(char *take,int startIndex)
+{
+    //if machines is liitle endian convert and return as this
+    if(isBigEndian())
+    {
+        //std::cout<<"The processor compute as Big Endian"<<std::endl;
+        return (((take[startIndex + 0] & 0xff) << 24) | ((take[startIndex + 1] & 0xff) << 16)
+                | ((take[startIndex + 2] & 0xff) << 8) | ((take[startIndex + 3] & 0xff)));
+    }
+    else
+    {
+        //cout<<"The processor compute as Little Endian"<<endl;
+        return (( ((take[startIndex + 8] & 0xff) << 64) | ((take[startIndex + 7] & 0xff) << 56) | ((take[startIndex + 6] & 0xff) << 48) | ((take[startIndex + 5] & 0xff) << 40) |
+        		((take[startIndex + 4] & 0xff) << 32) | ((take[startIndex + 3] & 0xff) << 24) | ((take[startIndex + 2] & 0xff) << 16)
+                | ((take[startIndex + 1] & 0xff) << 8) | ((take[startIndex + 0] & 0xff) )));
+    }
+}
+
 void ofxNeuroSensor::create_vector(){
     packetsPolarity.clear();
     int timestamp, data, filesize, i=0, ppp=0;
-    long rawdata;
+    char *rawdata = (char*)malloc(64);
     std::ifstream listStream1;
     listStream1.open (path, std::ios::in |std::ios::binary);
     if (listStream1.is_open())  {
         //Path chooses from GUI, Filename has to be set on top
-        
+
         //  std::cout << "Opened: " << Filename <<  "\n"<< std::endl;
         std::cout << "Opened: " << path <<  "\n"<< std::endl;
-        
-        
+
+
         listStream1.seekg(0,listStream1.end);
         filesize = double(listStream1.tellg());
-        
+
         listStream1.seekg(0,listStream1.beg);
-        
-        listStream1.read ((char*)&rawdata,64);
-        
+        listStream1.read(rawdata,64);
+
         while (listStream1.good()) {
-            
-            listStream1.read ((char*)&rawdata,64);
-            
-            data = (Datamask & rawdata) >> 32;
-            timestamp = (Timestampmask  & rawdata) ;
-            
+
+            listStream1.read(rawdata,64);
+            long long dd = convertByteToLong(rawdata,0);
+
+            data = ( 0x0000FFFF00000000 & dd) >> 32;
+            timestamp = (Timestampmask  & dd) ;
+
+            //listStream1.read (timestampRaw,32);
+            std::cout << "data " << data << " timestamp " << timestamp << std::endl;
+
             packetPolarity = PopulatePolarity(data, timestamp);
-            
+
             packetsPolarity.push_back (packetPolarity);
-            
+            std::cout << packetPolarity.pos.x << std::endl;
         }
     }
 }
+
 
 void ofxNeuroSensor::correct_timestamps(){
     //Timestamps go in overflow

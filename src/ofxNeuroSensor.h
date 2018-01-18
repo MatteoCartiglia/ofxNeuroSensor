@@ -38,7 +38,8 @@ public:
     void draw();
     
     
-    
+    int isBigEndian();
+    long convertByteToLong(char *take,int startIndex);
     void onButtonEvent(ofxDatGuiButtonEvent e);
     void onToggleEvent(ofxDatGuiToggleEvent e);
     void onSliderEvent(ofxDatGuiSliderEvent e);
