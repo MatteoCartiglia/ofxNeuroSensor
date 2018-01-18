@@ -20,6 +20,8 @@ Installation
 ------------
 Any steps necessary to install your addon. Optimally, this means just dropping the folder into the `openFrameworks/addons/` folder.
 
+Under linux, please go inside the folder addons/ofxNeuroSensor/example_ofxNeuroSensorGui and type 'make'. To launch the application, cd bin/ , ./example_ofxNeuroSensorGui, - or - make RunRelease.
+
 Dependencies
 ------------
 
