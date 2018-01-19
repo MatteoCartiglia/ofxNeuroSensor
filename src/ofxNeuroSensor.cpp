@@ -31,8 +31,8 @@
 #define BIAS_FILE "bias.xml"
 
 //Setting global variables
-# define Datamask 0xFFFFFFFF00000000
-# define Timestampmask 0x0000000FFFF
+# define Datamask 0x0000FFFF
+# define Timestampmask 0x0000FFFF
 
 //Used for matrix2D
 int evt_time = 0;
@@ -156,46 +156,44 @@ long ofxNeuroSensor::convertByteToLong(char *take,int startIndex)
     else
     {
         //cout<<"The processor compute as Little Endian"<<endl;
-        return (( ((take[startIndex + 8] & 0xff) << 64) | ((take[startIndex + 7] & 0xff) << 56) | ((take[startIndex + 6] & 0xff) << 48) | ((take[startIndex + 5] & 0xff) << 40) |
-        		((take[startIndex + 4] & 0xff) << 32) | ((take[startIndex + 3] & 0xff) << 24) | ((take[startIndex + 2] & 0xff) << 16)
-                | ((take[startIndex + 1] & 0xff) << 8) | ((take[startIndex + 0] & 0xff) )));
+        return ( ((take[startIndex + 3] & 0xff) << 24) | ((take[startIndex + 2] & 0xff) << 16)
+                | ((take[startIndex + 1] & 0xff) << 8) | ((take[startIndex + 0] & 0xff) ));
     }
 }
 
 void ofxNeuroSensor::create_vector(){
     packetsPolarity.clear();
     int timestamp, data, filesize, i=0, ppp=0;
-    char *rawdata = (char*)malloc(64);
+    char *rawdata = (char*)malloc(32);
     std::ifstream listStream1;
     listStream1.open (path, std::ios::in |std::ios::binary);
     if (listStream1.is_open())  {
         //Path chooses from GUI, Filename has to be set on top
-
         //  std::cout << "Opened: " << Filename <<  "\n"<< std::endl;
         std::cout << "Opened: " << path <<  "\n"<< std::endl;
 
-
         listStream1.seekg(0,listStream1.end);
         filesize = double(listStream1.tellg());
-
         listStream1.seekg(0,listStream1.beg);
-        listStream1.read(rawdata,64);
+        listStream1.read(rawdata,32);
+        listStream1.read(rawdata,32);
 
         while (listStream1.good()) {
 
-            listStream1.read(rawdata,64);
-            long long dd = convertByteToLong(rawdata,0);
+            listStream1.read(rawdata,32);
+            long dd = convertByteToLong(rawdata,0);
+            timestamp = (Timestampmask & dd);
 
-            data = ( 0x0000FFFF00000000 & dd) >> 32;
-            timestamp = (Timestampmask  & dd) ;
-
+            listStream1.read(rawdata,32);
+            dd = convertByteToLong(rawdata,0);
+            data = ( Datamask & dd);
+            
             //listStream1.read (timestampRaw,32);
             std::cout << "data " << data << " timestamp " << timestamp << std::endl;
 
             packetPolarity = PopulatePolarity(data, timestamp);
-
             packetsPolarity.push_back (packetPolarity);
-            std::cout << packetPolarity.pos.x << std::endl;
+            //std::cout << packetPolarity.pos.x << std::endl;
         }
     }
 }
