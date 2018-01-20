@@ -32,7 +32,7 @@
 
 //Setting global variables
 # define Datamask 0x0000FFFF
-# define Timestampmask 0x0000FFFF
+# define Timestampmask 0x000FFFF
 
 //Used for matrix2D
 int evt_time = 0;
@@ -88,9 +88,9 @@ polarity ofxNeuroSensor::PopulatePolarity( int data, int timestamp ){
     //12 bits --> from left to right: pol-5bit X address-pol-5bitY address
     polarity packetsPolarity;
     if (data == 0x1000 || data == 0x1001){
-        
+        // this is the test pixel
         packetsPolarity.pos.x= 35;
-        packetsPolarity.pos.y=35;
+        packetsPolarity.pos.y= 35;
         if (data == 0x1001 ){
             packetsPolarity.pol = 1;
         }
@@ -109,11 +109,11 @@ polarity ofxNeuroSensor::PopulatePolarity( int data, int timestamp ){
             packetsPolarity.valid=false; //NOT OK
             
         }
-        if ( 0x0001 & data )
+        if ( 0x0001 & data ){
             packetsPolarity.pol = 1;
-        else
+        }else{
             packetsPolarity.pol = 0;
-        
+        }
         
         packetsPolarity.pos.x= (0x003E & data) >> 1;
         packetsPolarity.pos.y= (0x0F80 & data) >> 7;
@@ -164,9 +164,10 @@ long ofxNeuroSensor::convertByteToLong(char *take,int startIndex)
 void ofxNeuroSensor::create_vector(){
     packetsPolarity.clear();
     int timestamp, data, filesize, i=0, ppp=0;
-    char *rawdata = (char*)malloc(32);
+    int32_t rawdata;
+    //uint32_t rawdata;
     std::ifstream listStream1;
-    listStream1.open (path, std::ios::in |std::ios::binary);
+    listStream1.open (path, std::ios::in | std::ios::binary);
     if (listStream1.is_open())  {
         //Path chooses from GUI, Filename has to be set on top
         //  std::cout << "Opened: " << Filename <<  "\n"<< std::endl;
@@ -175,21 +176,23 @@ void ofxNeuroSensor::create_vector(){
         listStream1.seekg(0,listStream1.end);
         filesize = double(listStream1.tellg());
         listStream1.seekg(0,listStream1.beg);
-        listStream1.read(rawdata,32);
-        listStream1.read(rawdata,32);
 
         while (listStream1.good()) {
-
-            listStream1.read(rawdata,32);
-            long dd = convertByteToLong(rawdata,0);
-            timestamp = (Timestampmask & dd);
-
-            listStream1.read(rawdata,32);
-            dd = convertByteToLong(rawdata,0);
-            data = ( Datamask & dd);
+            listStream1.read((char*)&rawdata,4);
+            printf("rawdata 0X%04x ", rawdata);
+            timestamp = (Timestampmask & rawdata) ;
+            std::cout << " timestamp " << timestamp << std::endl;
             
-            //listStream1.read (timestampRaw,32);
-            std::cout << "data " << data << " timestamp " << timestamp << std::endl;
+            listStream1.read((char*)&rawdata,4); // skip
+            listStream1.read((char*)&rawdata,4); // skip
+            listStream1.read((char*)&rawdata,4);
+            //int32_t lsb = (int32_t)(rawdata & 0xFFu);
+            //int32_t msb = (int32_t)((rawdata >> 8) & 0xFFu);
+            //int32_t rawD = msb | lsb << 8;
+            printf("rawdata 0X%04x ", rawdata);
+            //printf("rawdata 0X%04x ", rawD);
+            data = ( 0xffff & rawdata);
+            std::cout << "data " << data << std::endl;
 
             packetPolarity = PopulatePolarity(data, timestamp);
             packetsPolarity.push_back (packetPolarity);
