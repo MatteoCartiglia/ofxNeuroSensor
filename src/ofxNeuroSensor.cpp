@@ -30,10 +30,6 @@
 
 #define BIAS_FILE "bias.xml"
 
-//Setting global variables
-# define Datamask 0x0000FFFF
-# define Timestampmask 0x000FFFF
-
 //Used for matrix2D
 int evt_time = 0;
 int evt_time_old = 0;
@@ -99,9 +95,7 @@ polarity ofxNeuroSensor::PopulatePolarity( int data, int timestamp ){
         }
         packetsPolarity.valid=true; //OK
     }
-    
     else {
-        
         if (( 0x0001 & data ) == ((0x0040 & data)>>6)){
             packetsPolarity.valid=true; //OK
         }
@@ -114,7 +108,6 @@ polarity ofxNeuroSensor::PopulatePolarity( int data, int timestamp ){
         }else{
             packetsPolarity.pol = 0;
         }
-        
         packetsPolarity.pos.x= (0x003E & data) >> 1;
         packetsPolarity.pos.y= (0x0F80 & data) >> 7;
     }
@@ -165,12 +158,10 @@ void ofxNeuroSensor::create_vector(){
     packetsPolarity.clear();
     int timestamp, data, filesize, i=0, ppp=0;
     int32_t rawdata;
-    //uint32_t rawdata;
     std::ifstream listStream1;
     listStream1.open (path, std::ios::in | std::ios::binary);
     if (listStream1.is_open())  {
         //Path chooses from GUI, Filename has to be set on top
-        //  std::cout << "Opened: " << Filename <<  "\n"<< std::endl;
         std::cout << "Opened: " << path <<  "\n"<< std::endl;
 
         listStream1.seekg(0,listStream1.end);
@@ -179,24 +170,15 @@ void ofxNeuroSensor::create_vector(){
 
         while (listStream1.good()) {
             listStream1.read((char*)&rawdata,4);
-            printf("rawdata 0X%04x ", rawdata);
-            timestamp = (Timestampmask & rawdata) ;
-            std::cout << " timestamp " << timestamp << std::endl;
+            //printf("rawdata 0X%04x ", rawdata);
+            timestamp = (0xffff & rawdata) ;
             
-            listStream1.read((char*)&rawdata,4); // skip
-            listStream1.read((char*)&rawdata,4); // skip
             listStream1.read((char*)&rawdata,4);
-            //int32_t lsb = (int32_t)(rawdata & 0xFFu);
-            //int32_t msb = (int32_t)((rawdata >> 8) & 0xFFu);
-            //int32_t rawD = msb | lsb << 8;
-            printf("rawdata 0X%04x ", rawdata);
-            //printf("rawdata 0X%04x ", rawD);
-            data = ( 0xffff & rawdata);
-            std::cout << "data " << data << std::endl;
+            //printf("rawdata 0X%04x ", rawdata);
+            data = (0xffff & rawdata);
 
             packetPolarity = PopulatePolarity(data, timestamp);
             packetsPolarity.push_back (packetPolarity);
-            //std::cout << packetPolarity.pos.x << std::endl;
         }
     }
 }
