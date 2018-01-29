@@ -1,0 +1,7 @@
+[submodule "src/cxx"]
+	path = src/cxx
+	url = git@bitbucket.org:neuromorphs_paris/cxx.git
+[submodule "src/bioamp"]
+	path = src/bioamp
+	url = git@bitbucket.org:neuromorphs_paris/cxx.git
+	branch = openframework

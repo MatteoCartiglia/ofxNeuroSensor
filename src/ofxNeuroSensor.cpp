@@ -44,24 +44,15 @@ bool play = false;
 int over_dt = 10;
 
 
-unsigned long long old_ev_cnt = 0;
-unsigned long long old_of_cnt = 0;
-std::chrono::time_point<std::chrono::high_resolution_clock> start, end, origin;
-
 // Instantiate BioAmp device
 BioAmp dev1(XILINX_CONFIGURATION_FILE);
 
-// create buffer of events
-std::queue<EventRaw> ev_buffer;
-
-ofxNeuroSensor::ofxNeuroSensor(){
-    ;
-}
+ofxNeuroSensor::ofxNeuroSensor(){}
 
 void ofxNeuroSensor::setup_biases(string load_file){
-    
+
     settings.loadFile(load_file);
-    
+
     Values[0]  =  settings.getValue("bias:VBiasCharge",0);
     Values[1]  = settings.getValue("bias:VpiasP2",0);
     Values[2]  = settings.getValue("bias:VPullDn", 0);
@@ -74,14 +65,24 @@ void ofxNeuroSensor::setup_biases(string load_file){
     Values[9]  =  settings.getValue("bias:ThrDn", 0);
     Values[10]  = settings.getValue("bias:ThrUp", 0);
     Values[11] =  settings.getValue("bias:VBn", 0);
-    
+
 }
 
+polarity ofxNeuroSensor::PopulatePolarity( Event2d ev ) {
+  polarity packetsPolarity;
+  packetsPolarity.pos.x= ev.x;
+  packetsPolarity.pos.y= ev.y;
+  packetsPolarity.pol = ev.p;
+  packetsPolarity.valid=true; //OK
+  packetsPolarity.timestamp = ev.ts;
 
+  return packetsPolarity;
+}
 
 polarity ofxNeuroSensor::PopulatePolarity( int data, int timestamp ){
     //populate the polarity vector with the data
     //12 bits --> from left to right: pol-5bit X address-pol-5bitY address
+
     polarity packetsPolarity;
     if (data == 0x1000 || data == 0x1001){
         // this is the test pixel
@@ -101,7 +102,7 @@ polarity ofxNeuroSensor::PopulatePolarity( int data, int timestamp ){
         }
         else{
             packetsPolarity.valid=false; //NOT OK
-            
+
         }
         if ( 0x0001 & data ){
             packetsPolarity.pol = 1;
@@ -112,7 +113,6 @@ polarity ofxNeuroSensor::PopulatePolarity( int data, int timestamp ){
         packetsPolarity.pos.y= (0x0F80 & data) >> 7;
     }
     packetsPolarity.timestamp = (long)timestamp;
-    
     return packetsPolarity;
 }
 
@@ -172,7 +172,7 @@ void ofxNeuroSensor::create_vector(){
             listStream1.read((char*)&rawdata,4);
             //printf("rawdata 0X%04x ", rawdata);
             timestamp = (0xffff & rawdata) ;
-            
+
             listStream1.read((char*)&rawdata,4);
             //printf("rawdata 0X%04x ", rawdata);
             data = (0xffff & rawdata);
@@ -200,16 +200,16 @@ void ofxNeuroSensor::correct_timestamps(){
 
 void ofxNeuroSensor::populate_index_time_bin(){
     //Select which events to plot at this iteration
-    
+
     if (packetsPolarity.size()==0){
         return;
     }
-    
+
     if (tmp2 < packetsPolarity[packetsPolarity.size()-1].timestamp){
         // tmp1 =packetsPolarity[0].timestamp-1;
         tmp1 += dt/over_dt;
         tmp2 = tmp1 + dt;
-        
+
         if (index_time_bin.size()){
             cout <<"packet size: " << packetsPolarity.size() <<endl;
             cout <<"index_time_bin[0]: " << index_time_bin[0] <<endl;
@@ -217,14 +217,14 @@ void ofxNeuroSensor::populate_index_time_bin(){
             if (index_time_bin[0]>0){
                 packetsPolarity.erase (packetsPolarity.begin(), packetsPolarity.begin()+(index_time_bin[0]));
                 packetsPolarity.shrink_to_fit();
-                
+
             }
         }
-        
+
         index_time_bin.clear();
-        
-        
-        
+
+
+
         for (int ff =0; ff < (packetsPolarity.size()); ++ff){
             if ( packetsPolarity[ff].timestamp > tmp1 &&  packetsPolarity[ff].timestamp < tmp2 ) {
                 index_time_bin.push_back(ff);
@@ -234,17 +234,17 @@ void ofxNeuroSensor::populate_index_time_bin(){
     }
     if (tmp2 > packetsPolarity[packetsPolarity.size()-1].timestamp){
         index_time_bin.clear();
-        
+
         return;
-        
+
     }
 }
 
 void ofxNeuroSensor::Plot_3D_live(){
-    
+
     mesh.setMode(OF_PRIMITIVE_POINTS);
     glPointSize(5);
-    
+
     for(int i=0; i < (packetsPolarity.size());i++) {
         mesh.addVertex(ofPoint(pos(packetsPolarity[i].pos.x),pos(packetsPolarity[i].pos.y),pos(counter)));
         if(packetsPolarity[i].pol){
@@ -252,7 +252,7 @@ void ofxNeuroSensor::Plot_3D_live(){
         }else{
             mesh.addColor(ofColor(255,0,0,250)); // Red means off
         }
-        
+
     }
     packetsPolarity.clear();
     packetsPolarity.shrink_to_fit();
@@ -261,12 +261,12 @@ void ofxNeuroSensor::Plot_3D_live(){
 
 void ofxNeuroSensor::Plot_3D(){
     //plot in 3D
-    
+
     populate_index_time_bin();
-    
+
     mesh.setMode(OF_PRIMITIVE_POINTS);
     glPointSize(5);
-    
+
     if (index_time_bin.size()==0){
         return;
     }
@@ -278,9 +278,9 @@ void ofxNeuroSensor::Plot_3D(){
             }else{
                 mesh.addColor(ofColor(255,0,0,50)); // Red means off
             }
-            
+
         }
-        
+
     }
     counter++;
 }
@@ -289,7 +289,7 @@ void ofxNeuroSensor::Plot_2D_live(){
     mesh.clear(); // clear every time
     mesh.setMode(OF_PRIMITIVE_POINTS);
     glPointSize(5);
-    
+
     for(int i=0; i < (packetsPolarity.size());i++) {
         mesh.addVertex(ofPoint(pos(packetsPolarity[i].pos.x),pos(packetsPolarity[i].pos.y)));
         if(packetsPolarity[i].pol){
@@ -297,7 +297,7 @@ void ofxNeuroSensor::Plot_2D_live(){
         }else{
             mesh.addColor(ofColor(255,0,0,50)); // Red means off
         }
-        
+
     }
     packetsPolarity.clear();
     packetsPolarity.shrink_to_fit();
@@ -309,23 +309,23 @@ void ofxNeuroSensor::Plot_2D(){
     populate_index_time_bin();
     mesh.setMode(OF_PRIMITIVE_POINTS);
     glPointSize(5);
-    
+
     if (index_time_bin.size()==0){
         return;
-        
+
     }
     else {
-        
+
         for(int i=index_time_bin[0]; i < (index_time_bin[0] + index_time_bin.size()); i++) {
-            
+
             mesh.addVertex(ofPoint(pos(packetsPolarity[i].pos.x),pos(packetsPolarity[i].pos.y)));
-            
+
             if(packetsPolarity[i].pol){
                 mesh.addColor(ofColor(0,255,0,50));
             }else{
                 mesh.addColor(ofColor(255,0,0,50));
             }
-            
+
         }
     }
 }
@@ -338,11 +338,11 @@ void ofxNeuroSensor::setup_gui(){
     setup_biases(BIAS_FILE);
     f1 = new ofxDatGuiFolder("Control Panel");
     f1->addSlider("Set Framerate", 0.1, 60, ofGetFrameRate());
-    ofSetFrameRate(30); //Just for testing
+    ofSetFrameRate(25); //Just for testing
     f1->addFRM();
-    
+
     f1->addBreak();
-    
+
     Slider_VbCharge= f1->addSlider("VbiasCharge", 0.0, 3300,Values[0]);
     Slider_VpiasP2= f1->addSlider("VpiasP2", 0.0, 3300,Values[1]);
     Slider_VPullDn = f1->addSlider("VPullDn", 0.0, 3300,Values[2]);
@@ -367,9 +367,9 @@ void ofxNeuroSensor::setup_gui(){
     Slider_VPullDn->setPrecision(0);
     Slider_VpiasP2->setPrecision(0);
     Slider_VbCharge->setPrecision(0);
-    
+
     f1->addBreak();
-    
+
     twoD_visualisation = f1->addToggle("2D visualisation", false);
     threeD_visualisation = f1->addToggle("3D visualisation", true);
     f1->addSlider("dt", 100, 100000, dt);
@@ -388,19 +388,19 @@ void ofxNeuroSensor::setup_gui(){
     f1->addBreak();
     LIVE = f1->addToggle("LIVE", false);
     f1->addBreak();
-    
+
     f1->onButtonEvent(this, &ofxNeuroSensor::onButtonEvent);
     f1->onToggleEvent(this, &ofxNeuroSensor::onToggleEvent);
     f1->onSliderEvent(this, &ofxNeuroSensor::onSliderEvent);
     f1->onTextInputEvent(this, &ofxNeuroSensor::onTextInputEvent);
-    
+
 }
 
 void ofxNeuroSensor::update_gui(){
     if (play->getChecked()){
-        
-        if  (LIVE->getChecked() && FPGA){
-            
+
+        if  (LIVE->getChecked() && dev1.ok()){
+
             if (twoD_visualisation->getChecked()){
                 Plot_2D_live ();
             }
@@ -416,94 +416,89 @@ void ofxNeuroSensor::update_gui(){
                 Plot_3D();
             }
     }
-    
+
     f1->update();
 }
 
 void ofxNeuroSensor::setup_bioamp(){
-    
+
+
     //catch ctrl-C
     signal (SIGINT,my_handler);
-    
+
     // load biases from file
     setup_biases(BIAS_FILE);
-    
+
     dev1.enable_aer(false);
     dev1.enable_tp(false);
-    
+
     dev1.reset();
-    
+
     // set Biases to device
-    
+
     dev1.set_biases(Values);
-    
+
     // join pooling thread
     dev1.join_thread(&ev_buffer);
-    
+
     //dev1.enable_record(true, "only_up.dat");
-    
+
 }
 
 void ofxNeuroSensor::update_bioamp(){
-    
+
     start = std::chrono::high_resolution_clock::now();
     // Check input data, emptying buffer
     while(ev_buffer.size() > 0) {
-        EventRaw ev = ev_buffer.front();
+        Event2d ev = ev_buffer.front();
         ev_buffer.pop();
-        std::cout << ev.ts << "\t|\t" << ev.data << std::endl;
-        packetPolarity = PopulatePolarity(ev.data, ev.ts);
-        packetsPolarity.push_back (packetPolarity);
-        
-        std::cout << "update bioamp X" <<packetPolarity.pos.x << "\t|\t" << packetPolarity.pos.y << std::endl;
-        std::cout << "Time" <<packetPolarity.timestamp <<"Pol: " <<packetPolarity.pol << std::endl;
-        std::cout << "Size: " <<packetsPolarity.size()<< std::endl;
-        
-    }
-    
-    end = std::chrono::high_resolution_clock::now();
-    int elapsed = std::chrono::duration_cast<std::chrono::milliseconds>
-    (end-start).count();
-    int runtime = std::chrono::duration_cast<std::chrono::milliseconds>
-    (end-origin).count();
-    printf("[%.01fs] Events: %llu \t Overflow: %llu (%d/%d ms)\n",runtime/1000.,dev1.event_counter-old_ev_cnt,dev1.of_counter-old_of_cnt,elapsed, (1/ofGetFrameRate()));
-    old_ev_cnt = dev1.event_counter;
-    old_of_cnt = dev1.of_counter;
-    //dev.get_state();
-    //std::this_thread::sleep_for(std::chrono::milliseconds((1/ofGetFrameRate())));
-    
+        //std::cout << ev.ts << "\t|\t" << ev.data << std::endl;
+        packetPolarity = PopulatePolarity(ev);
+        packetsPolarity.push_back(packetPolarity);
+      }
+
+        end = std::chrono::system_clock::now();
+        int elapsed = std::chrono::duration_cast<std::chrono::milliseconds>
+                             (end-start).count();
+        int runtime = std::chrono::duration_cast<std::chrono::milliseconds>
+                             (end-origin).count();
+        printf("[%.01fs] Events: %llu \t Overflow: %llu (%d/%d ms) (%.1fkev/s)\n",runtime/1000.,dev1.event_counter,dev1.of_counter-old_of_cnt,elapsed, dt, (dev1.event_counter-old_ev_cnt)/(1.*dt));
+        old_ev_cnt = dev1.event_counter;
+
+
+
 }
 
 void ofxNeuroSensor::setup(){
     origin = std::chrono::high_resolution_clock::now();
     setup_gui();
-    if(FPGA){
+    if(dev1.ok()){
         setup_bioamp();
     }
 }
 
 void ofxNeuroSensor::update(){
-    if (FPGA){
-        
+    if (dev1.ok()){
+
         update_bioamp();
-        
+
     }
     update_gui();
 }
 
 
 void ofxNeuroSensor::draw(){
-    
+
     myCam.begin();
     ofPushMatrix();
-    
+
     mesh.draw();
     ofPopMatrix();
-    
+
     myCam.end();
-    
+
     f1->draw();
-    
+
 }
 
 void ofxNeuroSensor::onToggleEvent(ofxDatGuiToggleEvent e)
@@ -528,23 +523,23 @@ void ofxNeuroSensor::onToggleEvent(ofxDatGuiToggleEvent e)
         create_vector();
         correct_timestamps();
     }
-    
+
     /* if(e.target->getLabel() == "Play/Stop"){
      play->getChecked();
-     
+
      }*/
     if(e.target->getLabel() == "AER"){
         dev1.enable_aer(AER->getChecked());
         dev1.reset();
-        
+
     }
     if(e.target->getLabel() == "TP"){
         dev1.enable_tp(TP->getChecked());
         dev1.reset();
-        
+
     }
-    
-    
+
+
 }
 void ofxNeuroSensor::onButtonEvent(ofxDatGuiButtonEvent e)
 
@@ -553,7 +548,7 @@ void ofxNeuroSensor::onButtonEvent(ofxDatGuiButtonEvent e)
         ofFileDialogResult result = ofSystemLoadDialog("Load aedat file");
         if(result.bSuccess) {
             path = result.getPath();
-            
+
             create_vector();
             correct_timestamps();
         }
@@ -564,9 +559,9 @@ void ofxNeuroSensor::onButtonEvent(ofxDatGuiButtonEvent e)
             bias_path = result.getPath();
             cout << " " << bias_path <<endl;
             //settings.loadFile(bias_path);
-            
+
             setup_biases(bias_path);
-            
+
             Slider_VbCharge->setValue(Values[0]);
             Slider_VpiasP2->setValue(Values[1]);
             Slider_VPullDn->setValue(Values[2]);
@@ -579,11 +574,11 @@ void ofxNeuroSensor::onButtonEvent(ofxDatGuiButtonEvent e)
             Slider_ThrDn->setValue(Values[9]);
             Slider_ThrUp->setValue(Values[10]);
             Slider_VBn->setValue(Values[11]);
-            
+
             dev1.set_biases(Values);
         }
-        
-        
+
+
     }
 }
 
@@ -596,73 +591,73 @@ void ofxNeuroSensor::onSliderEvent(ofxDatGuiSliderEvent e)
     }
     if(e.target->getLabel() == "VbiasCharge" || e.target->getLabel() == "VpiasP2" ||e.target->getLabel() == "VRef" || e.target->getLabel() == "VPullDn" || e.target->getLabel() == "ChargeAl" || e.target->getLabel() == "Ref_B" ||e.target->getLabel() == "ReqPDn" || e.target->getLabel() == "TailN" ||  e.target->getLabel() == "TailP" ||e.target->getLabel() == "ThrDn" || e.target->getLabel() == "ThrUp" ||  e.target->getLabel() == "VBn" ){
         cout << "The new bias for "<< e.target->getLabel() << "  is : " << e.value << endl;
-        
+
         if(e.target->getLabel() == "VbiasCharge"){
             Values[0] =e.value;
             settings.setValue("bias:VBiasCharge", (int)Values[0]);
-            
+
         }
         else if(e.target->getLabel() == "VpiasP2"){
             Values[1] =e.value;
             settings.setValue("bias:VpiasP2", (int)Values[1]);
-            
+
         }
         else if(e.target->getLabel() == "VPullDn"){
             Values[2] =e.value;
             settings.setValue("bias:VPullDn", (int)Values[2]);
-            
+
         }
         else if(e.target->getLabel() == "VRef"){
             Values[3] =e.value;
             settings.setValue("bias:VRef", (int)Values[3]);
-            
+
         }
         else if(e.target->getLabel() == "ChargeAl"){
             Values[4] =e.value;
             settings.setValue("bias:ChargeAl", (int)Values[4]);
-            
+
         }
         else if(e.target->getLabel() == "Ref_B"){
             Values[5] =e.value;
             settings.setValue("bias:Ref_B", (int)Values[5]);
-            
+
         }
         else if(e.target->getLabel() == "ReqPDn"){
             Values[6] =e.value;
             settings.setValue("bias:ReqPDn",(int) Values[6]);
-            
+
         }
         else if(e.target->getLabel() == "TailN"){
             Values[7] =e.value;
             settings.setValue("bias:TailN",(int)Values[7]);
-            
+
         }
         else if(e.target->getLabel() == "TailP"){
             Values[8] =e.value;
             settings.setValue("bias:TailP", (int)Values[8]);
-            
+
         }
         else if(e.target->getLabel() == "ThrDn"){
             Values[9] =e.value;
             settings.setValue("bias:ThrDn",(int) Values[9]);
-            
+
         }
         else if(e.target->getLabel() == "ThrUp"){
             Values[10] =e.value;
             settings.setValue("bias:ThrUp",(int) Values[10]);
-            
+
         }
         else if(e.target->getLabel() == "VBn"){
             Values[11] =e.value;
             settings.setValue("bias:VBn", (int)Values[11]);
-            
+
         }
-        
+
         settings.saveFile(BIAS_FILE);
         dev1.set_biases(Values);
-        
-        
-        
+
+
+
     }
     if(e.target->getLabel() == "over dt"){
         over_dt = e.value;
@@ -670,8 +665,8 @@ void ofxNeuroSensor::onSliderEvent(ofxDatGuiSliderEvent e)
     if(e.target->getLabel() == "dt"){
         dt = e.value;
     }
-    
-    
+
+
 }
 void ofxNeuroSensor::onTextInputEvent(ofxDatGuiTextInputEvent e)
 {
@@ -689,11 +684,7 @@ void ofxNeuroSensor::onTextInputEvent(ofxDatGuiTextInputEvent e)
         settings.setValue("bias:ThrDn",(int) Values[9]);
         settings.setValue("bias:ThrUp",(int) Values[10]);
         settings.setValue("bias:VBn",(int) Values[11]);
-        
+
         settings.saveFile(e.text);
     }
 }
-
-
-
-
