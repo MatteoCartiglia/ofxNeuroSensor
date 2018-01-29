@@ -24,7 +24,6 @@ Under linux, please go inside the folder addons/ofxNeuroSensor/example_ofxNeuroS
 
 Dependencies
 ------------
-
 This addons depends on two additions addons; 1) ofxDatGui (https://github.com/braitsch/ofxDatGui.git), 2) ofxXmlSetting (https://github.com/openframeworks/openFrameworks/tree/master/addons/ofxXmlSettings).
 
 It requires the following libraries -lpthread, -ldl, -lokFrontPanel, -lboost_system
@@ -32,8 +31,11 @@ The FrontPanel library is distributed by opalKelly and it is available from the 
 
 Download
 --------
+This module uses submodules from git. Please ensure you have all the required files in src/bioamp
 Download this addon by using the Download button on the right side of the github page. Unzip, rename and copy it to your addons folder.
-
+OR
+Use the git clone command :
+git clone -b develop --recursive https://github.com/federicohyo/ofxNeuroSensor.git
 **PLEASE DON'T FORK** the addon template repo if you plan on creating your own addon, this will lead to confusion on the Github inheritance/forking graph, and you will unnecessarily have this repository's history in your own git repo.
 
 
