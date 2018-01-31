@@ -16,23 +16,20 @@
 #include <thread>
 #include <queue>
 #include <sys/stat.h>
+#include <stdlib.h>
 
 #include "events.h"
-//#include "bioamp_biases.h"
-//#include "ofApp.h"
-
-extern bool FPGA ;
 
 // uncomment to get some verbose debug
-// #define DEBUG
+//#define DEBUG
 
-#define BLOCK_SIZE      32              // bytes
+#define MIN_BLOCK_SIZE      16              // bytes
 #define OF_CODE         0xFFFF          // Overflow code
 
 #define READ_ADDR       0xA0  // Address for reading from device
 #define WRITE_ADDR      0x80  // Adress for writting to device
 
-#define READ_DELAY 10 // period of device's pooling
+#define READ_DELAY 1 // period of device's pooling
 
 // DAC Specific commands
 #define NOP 0x000000          // NOP
@@ -44,6 +41,15 @@ extern bool FPGA ;
 #define GAIN_CFG 0x007FF8     // Gain register mask
 #define DATA_MASK 0x00C000    // Data mask
 #define ADDR_SHIFT 16
+
+#define N_FIFO_IN 2
+
+// Biases definitions
+#define N_BIASES 12
+#define MAXIMUM_BIAS_VOLTAGE 3300 // 3300mV max
+
+extern bool FPGA ;
+
 
 class BioAmp
 {
@@ -69,16 +75,18 @@ public:
    * @param  ev_buffer [std::queue for stacking]
    * @return           [false if ok]
    */
-  bool read(std::queue<EventRaw>* ev_buffer);
+  bool read(std::queue<Event2d>* ev_buffer);
   /**
    * [write : Write to device]
    * @param ev_buffer [std::queue containing events to write]
    */
-  void write(std::queue<EventRaw>* ev_buffer);
-  /**
-   * [set_aer : Enable matrix pixels]
-   * @param state [true or false]
-   */
+  void write(std::queue<EventRaw>* ev_buffer, unsigned char addr);
+  void write_wrapper(std::queue<EventRaw>* ev_buffer);
+  void join_write_thread(std::queue<EventRaw>* ev_buffer);
+   /**
+    * [set_aer : Enable matrix pixels]
+    * @param state [true or false]
+    */
   void enable_aer(bool state);
   /**
    * [enable_tp : Enable test pixel]
@@ -93,15 +101,15 @@ public:
    * [listen : Create a thread listening to the device and pooling it]
    * @param ev_buffer [Pointer to a std::queue where to store events]
    */
-  void listen(std::queue<EventRaw>* ev_buffer);
+  void listen(std::queue<Event2d>* ev_buffer);
   /**
    * [join_thread : Wrapper for threading]
    * @param ev_buffer [Pointer to a std::queue where to store events]
    */
-  void join_thread(std::queue<EventRaw>* ev_buffer);
+  void join_thread(std::queue<Event2d>* ev_buffer);
   /**
    * [set_biases : Set all the Biases]
-   * @param biases [BioAmpBiases object]
+   * @param biases [int*]
    */
   void set_biases(int *biases);
   /**
@@ -115,21 +123,27 @@ public:
    * @param record_file [File where to store]
    */
   void enable_record(bool state, std::string record_file);
-  /**
-   * [get_count Print number of data filling FIFOs]
-   */
-  void get_count();
+
+  bool get_fifo_state(unsigned char id);
+
   /**
    * [ok : Check device connection]
    * @return [true if device still alive]
    */
   bool ok();
 
-  bool is_listening;
+
+  void load_biases(std::string filename);
+
+  unsigned int get_aer_state();
+
+  bool is_listening, is_writing;
   unsigned long long event_counter;
   unsigned long long of_counter;
-    
 
+  unsigned long ev_cnt[N_FIFO_IN], of_cnt[N_FIFO_IN];
+
+  int values[N_BIASES];
 
 private:
   okTDeviceInfo *g_devInfo;
@@ -137,11 +151,12 @@ private:
   bool aer_enabled, tp_enabled;
   boost::mutex thread_safety_;
   uint32_t data_count;
-  std::thread listener;
+  std::thread listener, writer;
   unsigned long long time_ref;
   bool record;
   std::string record_filename;
   std::ofstream* ofs;
+  std::vector<bool> fifo_state;
   /**
    * [initializeFPGA : Initialize FPGA with given bitfile]
    * @param config_filename [bitfile to load]
