@@ -291,18 +291,19 @@ bool BioAmp::read(std::queue<Event2d>* ev_buffer)
 
             }
             else {
-                unsigned int x = data & 0x1F;
-                unsigned int y = (data >> 6) & 0x1F;
-                unsigned char p1 = (data >> 5) & 0x1;
-                unsigned char p2 = (data >> 11) & 0x1;
-                std::cout << "AER event" << std::endl;
+                std::cout << "data: " << data << std::endl;
+                unsigned int x = (data>>1) & 0x1F;
+                unsigned int y = (data >> 7) & 0x1F;
+                unsigned char p1 = (data) & 0x1;
+                unsigned char p2 = (data >>6) & 0x1;
+                std::cout << "x: " << x << "y: " << y << std::endl;
+                
 
                 if(p1!=p2) {
                     std::cout << "WARNING : Invalid event." << std::endl;
                 }
                 ev = Event2d(time_ref + timestamp, x,y,p1);
-               
-
+           
             }
             tt = EventRaw(time_ref + timestamp, data);
          //   std::cout << "time" << timestamp <<"data" << data<< std::endl;
@@ -313,6 +314,7 @@ bool BioAmp::read(std::queue<Event2d>* ev_buffer)
 
 
             }
+      //      std::cout << "ev_buffer: " << ev_buffer->size() <<std::endl;
             ev_buffer->push(ev);
             
             }

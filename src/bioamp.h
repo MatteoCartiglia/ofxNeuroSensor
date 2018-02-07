@@ -144,12 +144,12 @@ public:
   unsigned long ev_cnt[N_FIFO_IN], of_cnt[N_FIFO_IN];
 
   int values[N_BIASES];
+  boost::mutex thread_safety_;
 
 private:
   okTDeviceInfo *g_devInfo;
   okCFrontPanel *dev;
   bool aer_enabled, tp_enabled;
-  boost::mutex thread_safety_;
   uint32_t data_count;
   std::thread listener, writer;
   unsigned long long time_ref;

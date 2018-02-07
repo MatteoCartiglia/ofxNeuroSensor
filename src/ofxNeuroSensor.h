@@ -17,7 +17,28 @@
 // XEM6310
 //#define XILINX_CONFIGURATION_FILE "../src/bioamp/bioAmp_1_05.bit"
 // XEM7310
-#define XILINX_CONFIGURATION_FILE "data/bioAmp_1_05_XEM7310.bit"
+//#define XILINX_CONFIGURATION_FILE "data/bioAmp_1_05_XEM7310.bit"
+//#define XILINX_CONFIGURATION_FILE "data/Bioamp_1_12_fixed_fsm_timing.bit"
+//Bioamp_1_13_200ns_delay_R_A.bit
+//#define XILINX_CONFIGURATION_FILE "data/Bioamp_1_13_200ns_delay_R_A.bit"
+//#define XILINX_CONFIGURATION_FILE "data/Bioamp_1_14_2us_delay_R_A.bit"
+//#define XILINX_CONFIGURATION_FILE "data/Bioamp_1_15_20us_delay_R_A.bit"
+//#define XILINX_CONFIGURATION_FILE "data/Bioamp_1_15_added_delay_nRes.bit"
+//#define XILINX_CONFIGURATION_FILE "data/Bioamp_1_12_fixed_fsm_timing.bit"
+//#define XILINX_CONFIGURATION_FILE "data/Bioamp_1_15_no_nRes.bit"
+
+//#define XILINX_CONFIGURATION_FILE "data/Bioamp_1_16_no_delay_nRes.bit"
+#define XILINX_CONFIGURATION_FILE "data/Bioamp_1_17_delay_nRes.bit"
+
+//#define XILINX_CONFIGURATION_FILE "data/Bioamp_1_18_nRes_only_aer_and50ns .bit"
+//#define XILINX_CONFIGURATION_FILE "data/Bioamp_1_19_nRes_fixed.bit"
+//#define XILINX_CONFIGURATION_FILE "data/Bioamp1_20_nRes_aeronly.bit"
+
+//#define XILINX_CONFIGURATION_FILE "data/Bioamo_1_21_simple.bit"
+//#define XILINX_CONFIGURATION_FILE "data/Bioamp_1_22_nRes_aerof.bit"
+//#define XILINX_CONFIGURATION_FILE "data/Bioamp_1_22_test.bit"
+//#define XILINX_CONFIGURATION_FILE "data/Bioamp_1_23_4state_machine_tp_priority.bit"
+
 
 #include "events.h"
 #include "bioamp.h"
@@ -86,9 +107,11 @@ public:
     void setup_gui();
     void update_gui();
     void setup_bioamp();
-
+    void lock();
+    void unlock();
 
     //Germain
+    boost::mutex mtx_;
     std::queue<Event2d> ev_buffer;
     unsigned long long old_ev_cnt = 0;
     unsigned long long old_of_cnt = 0;

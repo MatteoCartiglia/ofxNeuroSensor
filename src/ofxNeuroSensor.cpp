@@ -179,11 +179,11 @@ void ofxNeuroSensor::create_vector(){
             listStream1.read((char*)&rawdata,4);
            // printf("rawdata 0X%04x ", rawdata);
             timestamp = (0xffffffff & rawdata) ;
-            std::cout << "time: " << timestamp << std::endl;
+           // std::cout << "time: " << timestamp << std::endl;
             listStream1.read((char*)&rawdata,4);
           //  printf("rawdata 0X%04x ", rawdata);
             data = (0xffff & rawdata);
-            std::cout << "data: " << data << std::endl;
+           // std::cout << "data: " << data << std::endl;
 
 
             packetPolarity = PopulatePolarity(data, timestamp);
@@ -229,7 +229,7 @@ void ofxNeuroSensor::populate_index_time_bin(){
         // tmp1 =packetsPolarity[0].timestamp-1;
         tmp1 += dt/over_dt;
         tmp2 = tmp1 + dt;
-        std::cout << "tmp1: " << tmp1 << "tmp2: " << tmp2 << "size packet"  << packetsPolarity.size()<< std::endl;
+      //  std::cout << "tmp1: " << tmp1 << "tmp2: " << tmp2 << "size packet"  << packetsPolarity.size()<< std::endl;
         if (index_time_bin.size()){
        //     cout <<"packet size: " << packetsPolarity.size() <<endl;
        //     cout <<"index_time_bin[0]: " << index_time_bin[0] <<endl;
@@ -266,9 +266,9 @@ void ofxNeuroSensor::Plot_3D_live(){
     for(int i=0; i < (packetsPolarity.size());i++) {
         mesh.addVertex(ofPoint(pos(packetsPolarity[i].pos.x),pos(packetsPolarity[i].pos.y),counter));
         if(packetsPolarity[i].pol){
-            mesh.addColor(ofColor(0,255,0,50)); //Green means on
+            mesh.addColor(ofColor(0,255,0,150)); //Green means on
         }else{
-            mesh.addColor(ofColor(255,0,0,50)); // Red means off
+            mesh.addColor(ofColor(255,0,0,150)); // Red means off
         }
 
     }
@@ -287,8 +287,8 @@ void ofxNeuroSensor::Plot_3D(){
     glPointSize(5);
 
     if (index_time_bin.size()==0){
-        std::cout <<"Null index_time_bin" << std::endl;
-        std::cout <<"size pp"<< packetsPolarity.size() << std::endl;
+      //  std::cout <<"Null index_time_bin" << std::endl;
+      //  std::cout <<"size pp"<< packetsPolarity.size() << std::endl;
 
         counter++;
 
@@ -298,9 +298,9 @@ void ofxNeuroSensor::Plot_3D(){
         for(int i=index_time_bin[0]; i < (index_time_bin[0]+index_time_bin.size());i++) {
             mesh.addVertex(ofPoint(pos(packetsPolarity[i].pos.x),pos(packetsPolarity[i].pos.y),counter));
             if(packetsPolarity[i].pol){
-                mesh.addColor(ofColor(0,255,0,50)); //Green means on
+                mesh.addColor(ofColor(0,255,0,150)); //Green means on
             }else{
-                mesh.addColor(ofColor(255,0,0,50)); // Red means off
+                mesh.addColor(ofColor(255,0,0,150)); // Red means off
             }
 
         }
@@ -317,9 +317,9 @@ void ofxNeuroSensor::Plot_2D_live(){
     for(int i=0; i < (packetsPolarity.size());i++) {
         mesh.addVertex(ofPoint(pos(packetsPolarity[i].pos.x),pos(packetsPolarity[i].pos.y)));
         if(packetsPolarity[i].pol){
-            mesh.addColor(ofColor(0,255,0,50)); //Green means on
+            mesh.addColor(ofColor(0,255,0,150)); //Green means on
         }else{
-            mesh.addColor(ofColor(255,0,0,50)); // Red means off
+            mesh.addColor(ofColor(255,0,0,150)); // Red means off
         }
 
     }
@@ -345,9 +345,9 @@ void ofxNeuroSensor::Plot_2D(){
             mesh.addVertex(ofPoint(pos(packetsPolarity[i].pos.x),pos(packetsPolarity[i].pos.y)));
 
             if(packetsPolarity[i].pol){
-                mesh.addColor(ofColor(0,255,0,50));
+                mesh.addColor(ofColor(0,255,0,150));
             }else{
-                mesh.addColor(ofColor(255,0,0,50));
+                mesh.addColor(ofColor(255,0,0,150));
             }
 
         }
@@ -362,7 +362,7 @@ void ofxNeuroSensor::setup_gui(){
     setup_biases(BIAS_FILE);
     f1 = new ofxDatGuiFolder("Control Panel");
     f1->addSlider("Set Framerate", 0.1, 60, ofGetFrameRate());
-    ofSetFrameRate(25); //Just for testing
+    ofSetFrameRate(60); //Just for testing
     f1->addFRM();
 
     f1->addBreak();
@@ -469,19 +469,26 @@ void ofxNeuroSensor::setup_bioamp(){
 
 
 }
+void ofxNeuroSensor::lock() {
+    mtx_.lock();
+}
 
+void ofxNeuroSensor::unlock() {
+    mtx_.unlock();
+}
 void ofxNeuroSensor::update_bioamp(){
 
     start = std::chrono::high_resolution_clock::now();
     // Check input data, emptying buffer
+    boost::lock_guard<boost::mutex> guard(dev1.thread_safety_);
     while(ev_buffer.size() > 0) {
         Event2d ev = ev_buffer.front();
         ev_buffer.pop();
-        std::cout << std::dec <<ev.ts   << std::endl;
+    //    std::cout << std::dec <<ev.ts   << std::endl;
         packetPolarity = PopulatePolarity(ev);
         packetsPolarity.push_back(packetPolarity);
       }
-
+    
         end = std::chrono::high_resolution_clock::now();
         int elapsed = std::chrono::duration_cast<std::chrono::milliseconds>
                              (end-start).count();
@@ -520,7 +527,7 @@ void ofxNeuroSensor::draw(){
 
     myCam.begin();
     ofPushMatrix();
-
+    ofSetBackgroundColor(0,0,0);
     mesh.draw();
     ofPopMatrix();
 
