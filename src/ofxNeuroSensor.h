@@ -15,7 +15,7 @@
 #include "ofxDatGui.h"
 
 // XEM6310
-//#define XILINX_CONFIGURATION_FILE "../src/bioamp/bioAmp_1_05.bit"
+#define XILINX_CONFIGURATION_FILE "../src/bioamp/bioAmp_1_07.bit"
 // XEM7310
 //#define XILINX_CONFIGURATION_FILE "data/bioAmp_1_05_XEM7310.bit"
 //#define XILINX_CONFIGURATION_FILE "data/Bioamp_1_12_fixed_fsm_timing.bit"
@@ -28,7 +28,7 @@
 //#define XILINX_CONFIGURATION_FILE "data/Bioamp_1_15_no_nRes.bit"
 
 //#define XILINX_CONFIGURATION_FILE "data/Bioamp_1_16_no_delay_nRes.bit"
-#define XILINX_CONFIGURATION_FILE "data/Bioamp_1_17_delay_nRes.bit"
+//#define XILINX_CONFIGURATION_FILE "data/bioAmp_1_07.bit"
 
 //#define XILINX_CONFIGURATION_FILE "data/Bioamp_1_18_nRes_only_aer_and50ns .bit"
 //#define XILINX_CONFIGURATION_FILE "data/Bioamp_1_19_nRes_fixed.bit"

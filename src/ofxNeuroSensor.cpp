@@ -70,7 +70,7 @@ void ofxNeuroSensor::setup_biases(string load_file){
 }
 
 polarity ofxNeuroSensor::PopulatePolarity( Event2d ev ) {
-    
+
   polarity packetsPolarity;
   //  if (data == 0x1000 || data == 0x1001){
 
@@ -189,7 +189,7 @@ void ofxNeuroSensor::create_vector(){
             packetPolarity = PopulatePolarity(data, timestamp);
             packetsPolarity.push_back (packetPolarity);
         //    std::cout <<packetPolarity.timestamp <<std::endl;;
-            
+
             tmp1 =packetsPolarity[0].timestamp;
         }
     }
@@ -361,8 +361,8 @@ void my_handler(int a ){
 void ofxNeuroSensor::setup_gui(){
     setup_biases(BIAS_FILE);
     f1 = new ofxDatGuiFolder("Control Panel");
-    f1->addSlider("Set Framerate", 0.1, 60, ofGetFrameRate());
-    ofSetFrameRate(60); //Just for testing
+    f1->addSlider("Set Framerate", 0.1, 30, ofGetFrameRate());
+    ofSetFrameRate(20); //Just for testing
     f1->addFRM();
 
     f1->addBreak();
@@ -400,7 +400,7 @@ void ofxNeuroSensor::setup_gui(){
     f1->addSlider("over dt", 1, 25, over_dt);
     f1->addButton("Load Recording");
     f1->addBreak();
-    play = f1->addToggle("Play/Stop", false);
+    play = f1->addToggle("Play/Stop", true);
     f1->addBreak();
     string saving, saving_events;
     Save_Biases = f1->addTextInput("Save Biases:",saving);
@@ -412,7 +412,7 @@ void ofxNeuroSensor::setup_gui(){
     f1->addBreak();
     TP = f1->addToggle("TP");
     f1->addBreak();
-    LIVE = f1->addToggle("LIVE", false);
+    LIVE = f1->addToggle("LIVE", true);
     f1->addBreak();
 
     f1->onButtonEvent(this, &ofxNeuroSensor::onButtonEvent);
@@ -425,7 +425,7 @@ void ofxNeuroSensor::setup_gui(){
 void ofxNeuroSensor::update_gui(){
     if (play->getChecked()){
 
-        if  (LIVE->getChecked() && FPGA){
+        if  (LIVE->getChecked() && dev1.ok()){
 
             if (twoD_visualisation->getChecked()){
                 Plot_2D_live ();
@@ -488,17 +488,19 @@ void ofxNeuroSensor::update_bioamp(){
         packetPolarity = PopulatePolarity(ev);
         packetsPolarity.push_back(packetPolarity);
       }
-    
+
         end = std::chrono::high_resolution_clock::now();
         int elapsed = std::chrono::duration_cast<std::chrono::milliseconds>
                              (end-start).count();
         int runtime = std::chrono::duration_cast<std::chrono::milliseconds>
                              (end-origin).count();
-    printf("[%.01fs] Events: %llu \t Overflow: %llu (%d/%f ms) (%.1fkev/s)\n",runtime/1000.,dev1.event_counter-old_ev_cnt,dev1.of_counter-old_of_cnt,elapsed, (1/ofGetFrameRate()), (dev1.event_counter-old_ev_cnt)/(1.*ofGetFrameRate()));
+    printf("[%.01fs] Events: %llu \t Overflow: %llu (%d/%f ms) (%.1fkev/s)\n",runtime/1000.,dev1.event_counter-old_ev_cnt,dev1.of_counter-old_of_cnt,elapsed, (1/ofGetFrameRate()), (dev1.event_counter-old_ev_cnt)/(1./ofGetFrameRate()));
     old_ev_cnt = dev1.event_counter;
     old_of_cnt = dev1.of_counter;
+
+    dev1.reset_chip();
     //(1/ofGetFrameRate()) or dt?
-    
+
     //printf("[%.01fs] Events: %llu \t Overflow: %llu (%d/%d ms)\n",runtime/1000.,dev1.event_counter-old_ev_cnt,dev1.of_counter-old_of_cnt,elapsed, (1/ofGetFrameRate()));
 
 
@@ -508,13 +510,13 @@ void ofxNeuroSensor::update_bioamp(){
 void ofxNeuroSensor::setup(){
     origin = std::chrono::high_resolution_clock::now();
     setup_gui();
-    if(FPGA){
+    if(dev1.ok()){
         setup_bioamp();
     }
 }
 
 void ofxNeuroSensor::update(){
-    if (FPGA){
+    if (dev1.ok()){
 
         update_bioamp();
 
@@ -576,22 +578,22 @@ void ofxNeuroSensor::onToggleEvent(ofxDatGuiToggleEvent e)
     }
     if(e.target->getLabel() == "Events_saving"){
         if ( Save_events->getChecked() == 0){
-            
+
             dev1.enable_record(false);
         }
         if ( Save_events->getChecked() == 1){
-            
-            
+
+
             std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
             time_t  tt;
             tt = std::chrono::system_clock::to_time_t(now);
             std::string s = Saving_base_directory +std::to_string(tt)+".dat";
-            
+
             dev1.enable_record(true, s);
-            
+
             cout <<"Saving in: "  <<s << endl;
-            
-            
+
+
         }
 
 
@@ -743,14 +745,14 @@ void ofxNeuroSensor::onTextInputEvent(ofxDatGuiTextInputEvent e)
 
         settings.saveFile(e.text);
     }
-    
+
     if(e.target->getLabel() == "Save events:"){
         cout << e.text << endl;
         std::string s = Saving_base_directory + e.text + ".dat";
         cout <<"Saving in: "  <<s << endl;
-        
+
         dev1.enable_record(true,s);
-        
+
         Save_events->setChecked(true);
     }
 
